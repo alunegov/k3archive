@@ -1,0 +1,43 @@
+swagger: '2.0'
+info:
+  version: '1.0'
+  title: K3RPi Archive API
+host: localhost:3100
+schemes:
+  - http
+paths:
+  /:
+    get:
+      produces:
+        - application/json; charset=utf-8
+      responses:
+        '200':
+          description: ''
+  /{type}:
+    get:
+      produces:
+        - application/json; charset=utf-8
+      parameters:
+        - name: type
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: ''
+  /{type}/{msrId}:
+    get:
+      produces:
+        - application/octet-stream
+      parameters:
+        - name: type
+          in: path
+          type: string
+          required: true
+        - name: msrId
+          in: path
+          type: integer
+          required: true
+      responses:
+        '200':
+          description: ''
