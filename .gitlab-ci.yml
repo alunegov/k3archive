@@ -1,0 +1,20 @@
+build_rpi:
+  script: make build-rpi
+  stage: build
+  tags:
+    - windows
+    - go
+
+build_win_32:
+  script: make build-win-32
+  stage: build
+  tags:
+    - windows
+    - go
+
+build_win_64:
+  script: make build-win-64
+  stage: build
+  tags:
+    - windows
+    - go

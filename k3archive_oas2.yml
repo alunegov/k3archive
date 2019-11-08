@@ -1,43 +1,165 @@
 swagger: '2.0'
 info:
-  version: '1.0'
   title: K3RPi Archive API
+  version: '1.0'
 host: localhost:3100
 schemes:
   - http
 paths:
+  /api:
+    get:
+      tags:
+        - API
+      produces:
+        - text/plain; charset=utf-8
+      responses:
+        '404':
+          description: ''
+          schema:
+            type: string
+  /api/{type}:
+    get:
+      tags:
+        - API
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/typeParam'
+      responses:
+        '200':
+          description: 'list of msrs returned'
+          schema:
+            type: array
+            items:
+              $ref: '#definitions/FileInfo'
+        '500':
+          description: 'get msrs info error'
+          schema:
+            type: string
+  /api/{type}/{msrId}:
+    get:
+      tags:
+        - API
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/typeParam'
+        - $ref: '#/parameters/msrIdParam'
+      responses:
+        '200':
+          description: 'desc of msr returned'
+          schema:
+            $ref: '#/definitions/FileInfo'
+        '500':
+          description: 'get msr info error'
+          schema:
+            type: string
+    delete:
+      tags:
+        - API
+      produces:
+        - text/plain; charset=utf-8
+      parameters:
+        - $ref: '#/parameters/typeParam'
+        - $ref: '#/parameters/msrIdParam'
+      responses:
+        '204':
+          description: 'msr deleted'
+        '401':
+          description: 'Unauthorized'
+          schema:
+            type: string
+        '500':
+          description: 'delete msr error'
+          schema:
+            type: string
+      security:
+        - basicAuth: []
   /:
     get:
+      tags:
+        - HTML
       produces:
-        - application/json; charset=utf-8
+        - text/plain; charset=utf-8
       responses:
-        '200':
+        '404':
           description: ''
-  /{type}:
+          schema:
+            type: string
+  /{type}/:
     get:
+      tags:
+        - HTML
       produces:
-        - application/json; charset=utf-8
+        - text/html
       parameters:
-        - name: type
-          in: path
-          type: string
-          required: true
+        - $ref: '#/parameters/typeParam'
       responses:
         '200':
           description: ''
+          schema:
+            type: string
+        '404':
+          description: ''
+          schema:
+            type: string
   /{type}/{msrId}:
     get:
+      tags:
+        - HTML
       produces:
         - application/octet-stream
       parameters:
-        - name: type
-          in: path
-          type: string
-          required: true
-        - name: msrId
-          in: path
-          type: integer
-          required: true
+        - $ref: '#/parameters/typeParam'
+        - $ref: '#/parameters/msrIdParam'
       responses:
         '200':
           description: ''
+          schema:
+            type: file
+          headers:
+            Last-Modified:
+              type: string
+              format: date-time
+        '404':
+          description: ''
+          schema:
+            type: string
+definitions:
+  FileInfo:
+    type: object
+    properties:
+      Name:
+        type: string
+      Size:
+        type: integer
+        format: int64
+      ModTime:
+        type: string
+        format: date-time
+      Path:
+        type: string
+      Opts:
+        type: integer
+        format: uint8
+      Comment:
+        type: string
+parameters:
+  typeParam:
+    name: type
+    in: path
+    type: string
+    required: true
+    enum:
+      - Center
+      - Rms
+      - Signal
+  msrIdParam:
+    name: msrId
+    in: path
+    type: integer
+    required: true
+    minimum: 1
+securityDefinitions:
+  basicAuth:
+    type: basic
