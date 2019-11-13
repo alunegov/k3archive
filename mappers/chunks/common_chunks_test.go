@@ -10,7 +10,7 @@ import (
 	_chunksModels "github.com/alunegov/k3archive/models/chunks"
 )
 
-func TestLoad(t *testing.T) {
+func TestCommentChunkMapperLoad(t *testing.T) {
 	enc, err := htmlindex.Get("windows-1251")
 	if !assert.NoError(t, err) {
 		return
@@ -28,11 +28,12 @@ func TestLoad(t *testing.T) {
 
 	res := sut.Load(f, &_chunksModels.RosChunkFileHeader2{Offset: 45})
 
-	assert.NotNil(t, res)
-	switch o := res.(type) {
-	case *_chunksModels.CommentChunkV1:
-		assert.Equal(t, "dsfg укеук", o.Text)
-	default:
-		assert.Fail(t, "unsupp type")
+	if assert.NotNil(t, res) {
+		switch o := res.(type) {
+		case *_chunksModels.CommentChunkV1:
+			assert.Equal(t, "dsfg укеук", o.Text)
+		default:
+			assert.Fail(t, "unsupp type")
+		}
 	}
 }

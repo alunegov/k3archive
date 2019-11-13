@@ -2,7 +2,6 @@ package chunks
 
 import (
 	"encoding/binary"
-	"fmt"
 	"os"
 
 	_chunksModels "github.com/alunegov/k3archive/models/chunks"
@@ -54,10 +53,10 @@ func (it *RosChunkFileMapper) Load(name string) (*_chunksModels.RosChunkFile, er
 		ChunksData: chunksData,
 	}
 
-	fmt.Printf("%v\n", res)
+	/*fmt.Printf("%v\n", res)
 	for i := range res.ChunksData {
 		fmt.Printf("%v\n", res.ChunksData[i])
-	}
+	}*/
 
 	return res, nil
 }
