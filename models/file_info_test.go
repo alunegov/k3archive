@@ -10,19 +10,21 @@ import (
 )
 
 func TestNewFileInfo(t *testing.T) {
-	refTime := time.Now()
+	ref := &FileInfo{
+		Name:    "name",
+		Size:    13,
+		ModTime: time.Now(),
+		Path:    "test/name",
+		Opts:    0,
+		Comment: "",
+	}
 
 	sysFileInfoMock := &mocks.FileInfo{}
-	sysFileInfoMock.On("Name").Return("name")
-	sysFileInfoMock.On("Size").Return(int64(13))
-	sysFileInfoMock.On("ModTime").Return(refTime)
+	sysFileInfoMock.On("Name").Return(ref.Name)
+	sysFileInfoMock.On("Size").Return(ref.Size)
+	sysFileInfoMock.On("ModTime").Return(ref.ModTime)
 
 	res := NewFileInfo(sysFileInfoMock, "test")
 
-	assert.Equal(t, "name", res.Name)
-	assert.Equal(t, int64(13), res.Size)
-	assert.Equal(t, refTime, res.ModTime)
-	assert.Equal(t, "test/name", res.Path)
-	assert.Equal(t, uint8(0), res.Opts)
-	assert.Equal(t, "", res.Comment)
+	assert.Equal(t, ref, res)
 }

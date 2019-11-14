@@ -31,7 +31,10 @@ func TestCommentChunkMapperLoad(t *testing.T) {
 	if assert.NotNil(t, res) {
 		switch o := res.(type) {
 		case *_chunksModels.CommentChunkV1:
-			assert.Equal(t, "dsfg укеук", o.Text)
+			ref := &_chunksModels.CommentChunkV1{
+				Text: "dsfg укеук",
+			}
+			assert.Equal(t, ref, o)
 		default:
 			assert.Fail(t, "unsupp type")
 		}

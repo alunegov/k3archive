@@ -20,17 +20,20 @@ func TestSignalHeaderChunkMapperLoad(t *testing.T) {
 		_ = f_.Close()
 	}(f)
 
-	res := sut.Load(f, &_chunksModels.RosChunkFileHeader2{Offset: 0x8f})
+	res := sut.Load(f, &_chunksModels.RosChunkFileHeader2{Offset: 143})
 
 	if assert.NotNil(t, res) {
 		switch o := res.(type) {
 		case *_chunksModels.SignalHeaderChunkV1:
-			assert.Equal(t, uint8(0x1), o.RegChannelNum)
-			assert.Equal(t, uint8(0x1), o.DataType)
-			assert.Equal(t, uint8(0x3), o.DataUnits)
-			assert.Equal(t, uint32(0x190), o.PointsCount)
-			assert.Equal(t, float32(2.5), o.DX)
-			assert.Equal(t, float32(1), o.Coeff)
+			ref := &_chunksModels.SignalHeaderChunkV1{
+				RegChannelNum: 1,
+				DataType:      _chunksModels.DataType_Spectrum,
+				DataUnits:     _chunksModels.DataUnits_Marker,
+				PointsCount:   400,
+				DX:            2.5,
+				Coeff:         1.0,
+			}
+			assert.Equal(t, ref, o)
 		default:
 			assert.Fail(t, "unsupp type")
 		}
