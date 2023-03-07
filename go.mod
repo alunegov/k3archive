@@ -6,5 +6,5 @@ require (
 	github.com/julienschmidt/httprouter v1.2.0
 	github.com/rs/cors v1.7.0
 	github.com/stretchr/testify v1.4.0
-	golang.org/x/text v0.3.2
+	golang.org/x/text v0.3.8
 )
